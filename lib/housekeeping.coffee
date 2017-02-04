@@ -19,6 +19,15 @@ module.exports = class Housekeeping extends Mixin
       @subscriptions.add(@editor.onDidChangePath(@notifyContentsModified))
       @subscriptions.add(@editor.onDidChangeCursorPosition(=> @notifyChangeCursorPosition()))
 
+      # @subscriptions.add(@editor.observeGutters((gutter) =>
+      #   if gutter.name is "line-number"
+      #     console.log "#{gutter.name} has been attached!", gutter
+      #     # gutter = @editor.gutterWithName(gutter.name)
+      #     gutterView = atom.views.getView(gutter)
+      #     gutterCoords = gutterView.getBoundingClientRect()
+      #     console.log gutterCoords
+      # ))
+
       @subscriptions.add atom.project.onDidChangePaths => @subscribeToRepository()
 
       @subscriptions.add atom.commands.add @editorView, 'git-diff-details:toggle-git-diff-details', =>

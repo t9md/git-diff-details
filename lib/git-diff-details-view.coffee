@@ -4,6 +4,10 @@ _ = require 'underscore-plus'
 DiffDetailsDataManager = require './data-manager'
 Housekeeping = require './housekeeping'
 
+class LeView extends View
+  @content: ->
+    @div class: "my-cool-class", ""
+
 module.exports = class AtomGitDiffDetailsView extends View
   Housekeeping.includeInto(this)
 
@@ -14,6 +18,18 @@ module.exports = class AtomGitDiffDetailsView extends View
 
   initialize: (@editor) ->
     @editorView = atom.views.getView(@editor)
+
+    # gutter = @editor.gutterWithName("line-number")
+    # gutterView = atom.views.getView(gutter)
+    # gutterCoords = gutterView.getBoundingClientRect()
+    # console.log gutterCoords
+
+    marker = @editor.markBufferRange([[0, 0], [10, 0]], invalidate: "never")
+    view = new LeView()
+    # view.css("margin-left", "-10px")
+    view.on "click", () => console.log "clicked!"
+
+    @editor.decorateMarker(marker, type: "overlay", item: view)
 
     @diffDetailsDataManager = new DiffDetailsDataManager()
 
